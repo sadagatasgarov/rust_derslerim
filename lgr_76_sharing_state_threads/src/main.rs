@@ -1,13 +1,18 @@
-use std::sync::Mutex;
+use std::{
+    sync::{Arc, Mutex},
+    thread,
+};
 
 #[derive(Debug)]
 struct Database {
-    connections: Vec<u32>
+    connections: Vec<u32>,
 }
 
 impl Database {
     fn new() -> Database {
-        Database {connections: vec![]}
+        Database {
+            connections: vec![],
+        }
     }
 
     fn connect(&mut self, id: u32) {
@@ -15,13 +20,25 @@ impl Database {
     }
 }
 
-
-
-
 fn main() {
-    let db = Mutex::new(Database::new());
-    {
-        let mut db_lock = db.lock().unwrap();
-        db_lock.connect(1);
+    let db = Arc::new(Mutex::new(Database::new()));
+
+    let mut handles = vec![];
+
+
+    for i in 0..=32743 {
+        let db = Arc::clone(&db);
+        let handle = thread::spawn(move || {
+            let mut db_lock = db.lock().unwrap();
+            db_lock.connect(i);
+        });
+        handles.push(handle)
     }
+    for handle in handles{
+        handle.join().unwrap()
+    }
+
+    let db_lock = db.lock().unwrap();
+
+    println!("{:?}", db_lock);
 }

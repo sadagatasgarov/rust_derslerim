@@ -59,27 +59,41 @@ fn main() {
     //     }
     // }).collect::<Vec<Student>>();
 
-    // println!("{:?}", good_students);
-    // // MENIM HELL YOLUM COMBINATORLAR ILE --END--
+    // // println!("{:?}", good_students);
+    // // // MENIM HELL YOLUM COMBINATORLAR ILE --END--
+
+
+    // // VIDEODAKI HELL YOLU COMBINATOR ILE --START--
+    // let good_students: Vec<Student> = students.iter()
+    // .map(|s|{
+    //     let mut s = s.split(' ');
+    //     let name = s.next()?.to_owned();
+    //     let gpa = s.next()?.parse::<f32>().ok()?;
+    //     Some(Student {name, gpa})
+    // })
+    // .flatten()
+    // .filter(|s| s.gpa > 3.5)
+    // .collect();
+
+    // println!("{:?}", good_students)
+    // // VIDEODAKI HELL YOLU COMBINATOR ILE --START--
 
 
     // VIDEODAKI HELL YOLU COMBINATOR ILE --START--
     let good_students: Vec<Student> = students.iter()
-    .map(|s|{
+    .filter_map(|s|{
         let mut s = s.split(' ');
         let name = s.next()?.to_owned();
         let gpa = s.next()?.parse::<f32>().ok()?;
+        if gpa>3.5{
+            return None
+        }
         Some(Student {name, gpa})
     })
-    .flatten()
-    .filter(|s| s.gpa > 3.5)
     .collect();
 
     println!("{:?}", good_students)
     // VIDEODAKI HELL YOLU COMBINATOR ILE --START--
-
-
-
 
 
 }

@@ -31,7 +31,7 @@ impl IntoIterator for Person {
                 self.first_name,
                 self.last_name,
                 self.occupation
-            ]
+            ],
         }
     }
 }
@@ -39,9 +39,9 @@ impl IntoIterator for Person {
 fn main() {
 
     let p = Person{
-        first_name: "Sadagat".to_owned(),
-        last_name:"Asgarov".to_owned(),
-        occupation:"S engineer".to_owned(),
+        first_name: "Sadagat".to_string(),
+        last_name:"Asgarov".to_string(),
+        occupation:"S engineer".to_string(),
 
     };
 
@@ -52,5 +52,11 @@ fn main() {
     println!("{:?}",a);
 
     println!("{:?}",a.next());
+
+
+    for element in a {
+        println!("{}", element);
+    }
+
 
 }

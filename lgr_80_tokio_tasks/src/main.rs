@@ -13,6 +13,12 @@ async fn main() {
         handles.push(handle);
     }
 
+    handles.push(tokio::spawn(async{
+        let _res = tokio::task::spawn_blocking({||{
+            expensive_computation()
+        }});
+    }));
+
     for handle in handles {
         handle.await.unwrap();
     }
@@ -33,4 +39,16 @@ async fn my_function(i: i32) {
 async fn read_from_database() -> String{
     sleep(Duration::from_millis(50)).await;
     "DB Result".to_owned()
+}
+
+
+fn expensive_computation() {
+    let mut i = 0;
+
+    for _ in 0..400_000_000 {
+        i = i+1;
+       // println!("Done with expensive computatation! i = {i}")
+    }
+
+    println!("Done with expensive computatation! i = {i}")
 }

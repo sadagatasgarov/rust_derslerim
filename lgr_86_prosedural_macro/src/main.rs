@@ -29,11 +29,28 @@ impl Database {
     }
 }
 
-fn main() {
-    let mut db = Database::new("localhost:5433".to_owned());
-    for _ in 0..100{
-        db.connect();
-    }
+#[derive(Debug)]
+struct Product {
+    name: String,
+    price: u32,
+}
 
-    log_info!([TIME] starting program...);
+fn main() {
+    // let mut db = Database::new("localhost:5433".to_owned());
+    // for _ in 0..100 {
+    //     db.connect();
+    // }
+
+    // log_info!([TIME] starting program...);
+
+    let laptop = Product {
+        name: "MacBook Pro".to_owned(),
+        price: 2000,
+    };
+    buy_product(laptop, 20);
+}
+
+#[log_call]
+fn buy_product(product: Product, discount: u32) {
+    //
 }

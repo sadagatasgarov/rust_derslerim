@@ -10,6 +10,7 @@ proc-macro = true
 
 
 [dependencies]
-quote="*"
-chrono="*"
-syn = "*"
+quote="1.0"
+chrono="0.4"
+syn = {version = "1", features = ["full"]}
+darling = "0.13"

@@ -1,8 +1,45 @@
 extern crate proc_macro;
 
-use chrono::Utc;
+use chrono::prelude::*;
 use proc_macro::TokenStream;
-use quote::quote;
+use quote::{quote, ToTokens};
+
+use darling::FromMeta;
+use syn::{parse_macro_input, parse_quote, AttributeArgs, ItemFn};
+
+#[derive(FromMeta)]
+struct MacroArgs {
+    #[darling(default)]
+    verbose: bool,
+}
+
+#[proc_macro_attribute]
+pub fn log_call(args: TokenStream, input: TokenStream) -> TokenStream {
+    let attr_args = parse_macro_input!(args as AttributeArgs);
+    let mut input = parse_macro_input!(input as ItemFn);
+
+    let attr_args = match MacroArgs::from_list(&attr_args) {
+        Ok(v) => v,
+        Err(e) => {
+            return TokenStream::from(e.write_errors());
+        }
+    };
+
+    impl_log_call(&attr_args, &mut input)
+}
+
+fn impl_log_call(attr_args: &MacroArgs, input: &mut ItemFn) -> TokenStream {
+    let fn_name = &input.sig.ident;
+
+    input.block.stmts.insert(
+        0,
+        parse_quote! {
+            println!("[Info] calling {}", stringify!(#fn_name));
+        },
+    );
+
+    input.to_token_stream().into()
+}
 
 #[proc_macro_derive(Log)]
 pub fn log_derive(input: TokenStream) -> TokenStream {

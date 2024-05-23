@@ -12,3 +12,4 @@ proc-macro = true
 [dependencies]
 quote="*"
 chrono="*"
+syn = "*"

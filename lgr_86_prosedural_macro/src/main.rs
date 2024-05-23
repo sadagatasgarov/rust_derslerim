@@ -50,7 +50,7 @@ fn main() {
     buy_product(laptop, 20);
 }
 
-#[log_call]
+#[log_call(verbose)]
 fn buy_product(product: Product, discount: u32) {
     //
 }

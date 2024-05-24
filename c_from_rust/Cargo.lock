@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "lgr_97_FFI_C_from_rist"
+name = "c_from_rust"
 version = "0.1.0"
